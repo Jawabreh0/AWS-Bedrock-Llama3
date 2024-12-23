@@ -1,11 +1,15 @@
+require("dotenv").config();
+
 const {
   BedrockRuntimeClient,
   InvokeModelCommand,
 } = require("@aws-sdk/client-bedrock-runtime");
 
 // Initialize the Bedrock Runtime client
-const client = new BedrockRuntimeClient({ region: "us-west-2" });
 
+const client = new BedrockRuntimeClient({
+  region: process.env.AWS_REGION,
+});
 // Set the model ID for Meta's Llama 3
 const modelId = "meta.llama3-70b-instruct-v1:0";
 
