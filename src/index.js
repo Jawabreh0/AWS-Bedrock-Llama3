@@ -39,19 +39,33 @@ async function startChat() {
       return;
     }
     try {
-      const response = await chatFunction({
-        userMessage,
-        max_gen_len: 100,
-        temperature: 0.5,
-        top_p: 0.9,
-      });
-      if (chatFunction === chatWithLlama3) {
+      if (chatFunction === chatWithStreamLlama3) {
+        // Pause readline output
+        rl.pause();
+        await chatFunction({
+          userMessage,
+          max_gen_len: 4000,
+          temperature: 0.5,
+          top_p: 0.9,
+        });
+        console.log("\n");
+        // Resume readline output
+        rl.resume();
+        rl.prompt();
+      } else {
+        const response = await chatFunction({
+          userMessage,
+          max_gen_len: 4000,
+          temperature: 0.5,
+          top_p: 0.9,
+        });
         console.log(`Llama 3: ${response}`);
+        rl.prompt();
       }
     } catch (error) {
       console.error("An error occurred during the chat:", error);
+      rl.prompt();
     }
-    rl.prompt();
   }).on("close", () => {
     console.log("Conversation ended.");
     process.exit(0);
