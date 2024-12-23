@@ -15,13 +15,17 @@ const rl = readline.createInterface({
   prompt: "You: ",
 });
 
+let conversationHistory = [];
+
 async function chatWithLlama3(userMessage) {
-  const prompt = `
-<|begin_of_text|><|start_header_id|>user<|end_header_id|>
-${userMessage}
-<|eot_id|>
-<|start_header_id|>assistant<|end_header_id|>
-`;
+  conversationHistory.push({ role: "user", content: userMessage });
+
+  let prompt = "<|begin_of_text|>";
+  conversationHistory.forEach((message) => {
+    const roleTag = message.role === "user" ? "user" : "assistant";
+    prompt += `<|start_header_id|>${roleTag}<|end_header_id|>\n${message.content}\n<|eot_id|>\n`;
+  });
+  prompt += "<|start_header_id|>assistant<|end_header_id|>\n";
 
   const requestPayload = {
     prompt,
@@ -41,6 +45,7 @@ ${userMessage}
     const responseBody = JSON.parse(new TextDecoder().decode(response.body));
     const responseText = responseBody.generation || "No response generated.";
     console.log(`Llama 3: ${responseText}`);
+    conversationHistory.push({ role: "assistant", content: responseText });
   } catch (error) {
     console.error("Error invoking Llama 3:", error);
   }
