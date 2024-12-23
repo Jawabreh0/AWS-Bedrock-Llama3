@@ -1,6 +1,6 @@
 # AWS Bedrock Llama 3
 
-This repository contains a simple chat application using AWS Bedrock's Llama 3 model. The application allows users to interact with the Llama 3 model via the command line.
+This repository contains a simple chat application to show how to configure AWS Bedrock Llama 3 models in your own app. The application allows users to interact with the Llama 3 model via the command line.
 
 ## Features
 
