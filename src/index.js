@@ -20,7 +20,12 @@ rl.on("line", async (line) => {
     return;
   }
   try {
-    const response = await chatWithLlama3(userMessage);
+    const response = await chatWithLlama3({
+      userMessage,
+      max_gen_len: 100,
+      temperature: 0.5,
+      top_p: 0.9,
+    });
     console.log(`Llama 3: ${response}`);
   } catch (error) {
     console.error("An error occurred during the chat:", error);

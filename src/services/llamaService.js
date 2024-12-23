@@ -10,7 +10,12 @@ const client = new BedrockRuntimeClient({
 
 let conversationHistory = [];
 
-async function chatWithLlama3(userMessage) {
+async function chatWithLlama3({
+  userMessage,
+  max_gen_len,
+  temperature,
+  top_p,
+}) {
   conversationHistory.push({ role: "user", content: userMessage });
 
   let prompt = "<|begin_of_text|>";
@@ -22,9 +27,9 @@ async function chatWithLlama3(userMessage) {
 
   const requestPayload = {
     prompt,
-    max_gen_len: 512,
-    temperature: 0.5,
-    top_p: 0.9,
+    max_gen_len,
+    temperature,
+    top_p,
   };
 
   const request = new InvokeModelCommand({
